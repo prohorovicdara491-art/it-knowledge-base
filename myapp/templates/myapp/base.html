@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT База знаний | Космический репозиторий</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(ellipse at 20% 30%, #0a0a2a, #030318);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 3s) infinite ease-in-out;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(90deg, white, transparent);
+            animation: shoot 4s linear infinite;
+            opacity: 0;
+        }
+        @keyframes shoot {
+            0% { transform: translateX(0) translateY(0); opacity: 1; }
+            100% { transform: translateX(300px) translateY(150px); opacity: 0; }
+        }
+        .navbar {
+            background: rgba(15, 25, 45, 0.5);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #a855f7, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .navbar-brand i { font-size: 1.8rem; color: #a855f7; animation: brainGlow 3s ease-in-out infinite; }
+        @keyframes brainGlow {
+            0%, 100% { filter: drop-shadow(0 0 2px #a855f7); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 10px #a855f7); transform: scale(1.03); }
+        }
+        .card {
+            background: rgba(20, 30, 55, 0.45) !important;
+            backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(168, 85, 247, 0.3) !important;
+            border-radius: 24px !important;
+            transition: all 0.4s ease !important;
+            height: 100%;
+        }
+        .card:hover {
+            background: rgba(35, 50, 85, 0.55) !important;
+            border-color: rgba(168, 85, 247, 0.6) !important;
+            transform: translateY(-6px) !important;
+        }
+        .card-title, .card-text, .card p { color: #ffffff !important; }
+        .card-text { color: rgba(255, 255, 255, 0.75) !important; }
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 5px 14px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        .btn-glass:hover { background: rgba(168, 85, 247, 0.35); color: white; }
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(168,85,247,0.6);
+            transition: all 0.3s;
+            z-index: 1000;
+            text-decoration: none;
+        }
+        .fab:hover { transform: scale(1.1) rotate(90deg); }
+        .search-section {
+            background: rgba(15, 25, 45, 0.4);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: white;
+        }
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168,85,247,0.2);
+            color: white;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            border: none;
+            border-radius: 40px;
+            padding: 10px 28px;
+        }
+        .stats {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: rgba(15, 25, 45, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 14px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .stat-card i { font-size: 1.8rem; color: #a855f7; }
+        .stat-card .stat-number { font-size: 1.8rem; font-weight: 700; color: white; }
+        footer {
+            background: rgba(10, 15, 30, 0.5);
+            backdrop-filter: blur(12px);
+            margin-top: 60px;
+            padding: 28px 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .meta-info {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card { animation: fadeInUp 0.5s ease forwards; }
+        main { position: relative; z-index: 2; }
+        .badge-category {
+            background: rgba(168, 85, 247, 0.3);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div id="shooting-stars"></div>
+<script>
+    function createStars() {
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            starsContainer.appendChild(star);
+        }
+    }
+    function createShootingStars() {
+        const shootingContainer = document.getElementById('shooting-stars');
+        setInterval(() => {
+            const star = document.createElement('div');
+            star.classList.add('shooting-star');
+            star.style.left = Math.random() * 80 + 10 + '%';
+            star.style.top = Math.random() * 40 + '%';
+            star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            shootingContainer.appendChild(star);
+            setTimeout(() => star.remove(), 4000);
+        }, 8000);
+    }
+    createStars();
+    createShootingStars();
+</script>
+<nav class="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'note_list' %}">
+            <i class="fas fa-brain"></i>
+            IT База знаний
+        </a>
+    </div>
+</nav>
+<main>
+    <div class="container py-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show rounded-4 mb-4" style="background: rgba(16,185,129,0.15); backdrop-filter: blur(12px); border: 1px solid rgba(16,185,129,0.3); color: #a7f3d0;">
+                    {{ message }}
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</main>
+<a href="{% url 'note_create' %}" class="fab">
+    <i class="fas fa-plus fa-lg"></i>
+</a>
+<footer>
+    <div class="container">
+        <p><i class="fas fa-rocket me-2"></i> Команда «Прогресс Агро» • Космический репозиторий знаний • Практика 2026</p>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+            alert.style.transition = 'opacity 0.4s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 400);
+        });
+    }, 3000);
+</script>
+</body>
+</html>

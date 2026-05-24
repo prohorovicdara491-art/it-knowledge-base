@@ -1,0 +1,38 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card p-4">
+            <h1 class="card-title mb-3">{{ note.title }}</h1>
+            <div class="mb-3">
+                {% if note.tech_category %}
+                <span class="badge-category">
+                    🔧 
+                    {% if note.tech_category == 'linux' %}Linux
+                    {% elif note.tech_category == 'python' %}Python
+                    {% elif note.tech_category == 'django' %}Django
+                    {% elif note.tech_category == 'docker' %}Docker
+                    {% elif note.tech_category == 'database' %}Базы данных
+                    {% elif note.tech_category == 'network' %}Сети
+                    {% elif note.tech_category == 'git' %}Git
+                    {% else %}{{ note.tech_category }}{% endif %}
+                </span>
+                {% endif %}
+                <span class="badge-category ms-2">📂 {{ note.get_category_display }}</span>
+            </div>
+            <div class="detail-content" style="color: rgba(255,255,255,0.9); line-height: 1.7;">
+                {{ note.content|linebreaks }}
+            </div>
+            <div class="meta-info mt-4">
+                <span><i class="fas fa-calendar"></i> {{ note.created_at|date:"d.m.Y H:i" }}</span>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'note_update' note.pk %}" class="btn-glass"><i class="fas fa-edit"></i> Редактировать</a>
+                    <a href="{% url 'note_delete' note.pk %}" class="btn-glass" onclick="return confirm('Удалить?')"><i class="fas fa-trash"></i> Удалить</a>
+                    <a href="{% url 'note_list' %}" class="btn-glass"><i class="fas fa-arrow-left"></i> Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

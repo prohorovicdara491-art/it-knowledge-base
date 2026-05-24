@@ -1,0 +1,93 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="stats">
+    <div class="stat-card">
+        <i class="fas fa-database"></i>
+        <div>
+            <div class="stat-number">{{ notes|length }}</div>
+            <div class="stat-label">всего заметок</div>
+        </div>
+    </div>
+</div>
+
+<div class="search-section">
+    <form method="get">
+        <div class="row g-3">
+            <div class="col-md-5">
+                <input type="text" name="q" class="form-control" placeholder="🔍 Поиск по названию или содержимому..." value="{{ request.GET.q }}">
+            </div>
+            <div class="col-md-3">
+                <select name="tech_category" class="form-select">
+                    <option value="">📁 IT категория</option>
+                    <option value="linux" {% if request.GET.tech_category == 'linux' %}selected{% endif %}>🐧 Linux</option>
+                    <option value="python" {% if request.GET.tech_category == 'python' %}selected{% endif %}>🐍 Python</option>
+                    <option value="django" {% if request.GET.tech_category == 'django' %}selected{% endif %}>🌐 Django</option>
+                    <option value="docker" {% if request.GET.tech_category == 'docker' %}selected{% endif %}>🐳 Docker</option>
+                    <option value="database" {% if request.GET.tech_category == 'database' %}selected{% endif %}>🗄️ Базы данных</option>
+                    <option value="network" {% if request.GET.tech_category == 'network' %}selected{% endif %}>🌍 Сети</option>
+                    <option value="git" {% if request.GET.tech_category == 'git' %}selected{% endif %}>📦 Git</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="category" class="form-select">
+                    <option value="">📂 Тип</option>
+                    <option value="work" {% if request.GET.category == 'work' %}selected{% endif %}>💼 Работа</option>
+                    <option value="personal" {% if request.GET.category == 'personal' %}selected{% endif %}>👤 Личное</option>
+                    <option value="study" {% if request.GET.category == 'study' %}selected{% endif %}>📚 Учёба</option>
+                    <option value="other" {% if request.GET.category == 'other' %}selected{% endif %}>📌 Другое</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Найти</button>
+                    <a href="{% url 'note_list' %}" class="btn-glass">Сброс</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if notes %}
+<div class="row g-4">
+    {% for note in notes %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body">
+                {% if note.tech_category %}
+                <div class="mb-2">
+                    <span class="badge-category">
+                        {% if note.tech_category == 'linux' %}🐧 Linux
+                        {% elif note.tech_category == 'python' %}🐍 Python
+                        {% elif note.tech_category == 'django' %}🌐 Django
+                        {% elif note.tech_category == 'docker' %}🐳 Docker
+                        {% elif note.tech_category == 'database' %}🗄️ БД
+                        {% elif note.tech_category == 'network' %}🌍 Сети
+                        {% elif note.tech_category == 'git' %}📦 Git
+                        {% else %}{{ note.tech_category }}{% endif %}
+                    </span>
+                </div>
+                {% endif %}
+                <h5 class="card-title">{{ note.title|truncatechars:50 }}</h5>
+                <p class="card-text">{{ note.content|striptags|truncatewords:20 }}</p>
+                <div class="meta-info">
+                    <span><i class="fas fa-calendar"></i> {{ note.created_at|date:"d.m.Y" }}</span>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'note_detail' note.pk %}" class="btn-glass"><i class="fas fa-eye"></i></a>
+                        <a href="{% url 'note_update' note.pk %}" class="btn-glass"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'note_delete' note.pk %}" class="btn-glass" onclick="return confirm('Удалить?')"><i class="fas fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-search fa-4x mb-3" style="color: #a855f7;"></i>
+    <h3>Ничего не найдено</h3>
+    <a href="{% url 'note_list' %}" class="btn-glass mt-3">Показать всё</a>
+</div>
+{% endif %}
+{% endblock %}
