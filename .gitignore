@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+*.log
+
+# Django
+*.sqlite3
+db.sqlite3
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets
+*.pem
+*.key
+.env
+
+# OS
+.DS_Store
