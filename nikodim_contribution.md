@@ -9,3 +9,4 @@
 - ✅ Провёл ручное тестирование всех маршрутов и форм
 - ✅ Составил ER-диаграмму базы данных (файл `er_diagram.drawio.png`)
  - Add my contribution
+![ER-диаграмма базы данных](IT_Knowledge_Base_ERD.drawio.png)
